@@ -5,7 +5,7 @@ class Transaction extends Model {
     super.init(
       {
         title: Sequelize.STRING,
-        value: Sequelize.DECIMAL,
+        value: Sequelize.FLOAT,
         type: { type: Sequelize.ENUM, values: ['income', 'outcome'] },
       },
       {

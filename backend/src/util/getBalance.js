@@ -20,12 +20,9 @@ export default (transaction) => {
     }
   );
 
-  const total = income - outcome;
-
   const balance = {
     income,
     outcome,
-    total,
   };
 
   return balance;

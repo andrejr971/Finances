@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import * as Yup from 'yup';
 import User from '../models/User';
+import File from '../models/File';
 
 import authConfig from '../../config/auth';
 
@@ -29,10 +30,18 @@ class SessionController {
       return res.status(401).json({ error: 'Senha inválida' });
     }
 
-    const { id, name } = user;
+    const profile = await User.findOne({
+      where: { email },
+      attributes: ['id', 'name', 'email', 'avatar_id'],
+      include: [
+        { model: File, as: 'avatar', attributes: ['name', 'path', 'url'] },
+      ],
+    });
+
+    const { id } = user;
 
     return res.json({
-      user: { id, name, email },
+      profile,
       token: jwt.sign({ id }, authConfig.secret, {
         expiresIn: authConfig.expireIn,
       }),

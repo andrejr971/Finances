@@ -51,8 +51,9 @@ class UserController {
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Falha na Validação' });
+      return res.status(401).json({ error: 'Falha na validação' });
     }
+
     const { userId } = req;
 
     const { email, oldPassword } = req.body;

@@ -2,16 +2,18 @@ import Category from '../models/Category';
 
 class CategoryController {
   async index(req, res) {
-    const { page = 1 } = req.query;
-
     const category = await Category.findAll({
       where: { user_id: req.userId },
-      attributes: ['id', 'title'],
-      limit: 10,
-      offset: (page - 1) * 10,
+      // attributes: ['id', 'title', 'created_at'],
     });
 
-    return res.json(category);
+    const categories = category.map((cat) => ({
+      id: cat.id,
+      title: cat.title,
+      createdAt: cat.createdAt,
+    }));
+
+    return res.json(categories);
   }
 
   async store(req, res) {
@@ -30,7 +32,12 @@ class CategoryController {
       user_id: req.userId,
     });
 
-    return res.json(category);
+    const categories = {
+      id: category.id,
+      title: category.title,
+      createdAt: category.createdAt,
+    };
+    return res.json(categories);
   }
 
   async delete(req, res) {
